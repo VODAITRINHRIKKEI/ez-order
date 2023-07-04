@@ -1,7 +1,9 @@
-import React from 'react'
-
+import React from "react";
+import Title from "../component/Title";
 export default function Menu() {
   return (
-    <div>Menu</div>
-  )
+    <div>
+      <Title>Categories</Title>
+    </div>
+  );
 }

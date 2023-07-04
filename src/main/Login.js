@@ -8,13 +8,9 @@ import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import GoogleIcon from "@mui/icons-material/Google";
-import { setToken } from "../slice/loginSlice";
+import { setToken, setUserInfo } from "../slice/loginSlice";
 import { useDispatch } from "react-redux";
 import Home from "./Home";
-function LoadingComponent() {
-  return <div className="loading"></div>;
-}
-
 function LoginComponent() {
   const setUser = (user) => {
     db.collection("user")
@@ -87,50 +83,29 @@ function LoginComponent() {
   );
 }
 
-
 export default function Login() {
-  const [loading, isLoading] = useState(false);
-  const [needLogging, isNeedLogging] = useState(true);
-  const [userToken, setUserToken] = useState("")
   const dispatch = useDispatch();
+  const [needLogging, isNeedLogging] = useState(true);
   useEffect(() => {
-    checkAuth();
+    checkLogin();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const checkAuth = async () => {
+  const checkLogin = async () => {
     await firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         dispatch(setToken(user.uid));
-        setUserToken(user.uid)
+        const userInfo = {
+          uid: user.uid,
+          email: user.email,
+          photoURL: user.photoURL,
+          displayName: user.displayName,
+        };
+        dispatch(setUserInfo(userInfo));
+        isNeedLogging(false);
       } else {
-        dispatch(setToken(""));
+        isNeedLogging(true);
       }
     });
-    await checkToken();
   };
-  const checkToken = async () => {
-    await isLoading(true);
-    if (userToken != null) {
-      isNeedLogging(false);
-    }
-  };
-  return (
-    <>
-      {loading ? (
-        <>
-          {needLogging ? (
-            <div className="login">
-              <div className="loginBox">
-                <LoginComponent></LoginComponent>
-              </div>
-            </div>
-          ) : (
-            <Home></Home>
-          )}
-        </>
-      ) : (
-        <LoadingComponent></LoadingComponent>
-      )}
-    </>
-  );
+  return <>{needLogging ? <LoginComponent /> : <Home />}</>;
 }

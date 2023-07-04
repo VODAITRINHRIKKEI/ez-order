@@ -1,45 +1,85 @@
-.home{
-    width: 100%;
-    height: 100vh;
-    background-color: #F8FAFB;
-    box-sizing: border-box;
+.home {
+  width: 100%;
+  height: 100vh;
+  background-color: #f8fafb;
+  box-sizing: border-box;
 }
 
-.nav{
-    width: 100%;
-    height: 55px;
-    box-sizing: border-box;
-    background-color: #fff;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 30px;
+.homeContent {
+  padding: 30px;
 }
 
-.navLogo{
-    font-weight: 800;
-    color: #6F6AF2;
-    font-size: 16px;
+.nav {
+  width: 100%;
+  height: 55px;
+  box-sizing: border-box;
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30px;
 }
 
-.navLinks{
-    display: flex;
+.navLogo {
+  font-weight: 800;
+  color: #6f6af2;
+  font-size: 16px;
 }
 
-.navLink a{
-    display: flex;
-    text-decoration: none;
-    align-items: center;
-    color: #A8A7CD;
-    padding: 1rem;
-    font-weight: 400;
-}
-.navLink a .navIcon{
-    margin-right: 4px;
+.navLinks {
+  display: flex;
 }
 
-.navLinkActive a{
-    transition: 0.3s linear all;
-    color: #6F6AF2;
-    font-weight: 600;
+.navLink a {
+  display: flex;
+  text-decoration: none;
+  align-items: center;
+  color: #a8a7cd;
+  padding: 1rem;
+  font-weight: 400;
+}
+.navLink a .navIcon {
+  margin-right: 4px;
+}
+
+.navLinkActive a {
+  transition: 0.3s linear all;
+  color: #6f6af2;
+  font-weight: 600;
+}
+img {
+  width: 100%;
+  height: 100%;
+}
+
+.userImage {
+  width: 47px;
+  height: 47px;
+}
+
+.userImage img {
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.navUser {
+  display: flex;
+  align-items: center;
+}
+.notificationIcon {
+  color: #a8a7cd;
+  border: 1px solid rgba(194, 194, 194, 0.3);
+  font-size: 15px;
+  padding: 4px;
+  border-radius: 50%;
+}
+
+.notificationIconActiveColor {
+  color: #383576;
+}
+
+.notificationIcon:hover {
+  transition: 0.2s linear all;
+  background-color: #383576;
+  color: #f8fafb;
 }
