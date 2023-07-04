@@ -2,32 +2,27 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { store } from "./app/store";
-import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Router from "./Router";
 import "./index.css";
-
 const container = document.getElementById("root");
 const root = createRoot(container);
 const theme = createTheme({
   palette: {
     primary: {
-      // Purple and green play nicely together.
       main: "#6F6AF2",
     },
     secondary: {
-      // This is green.A700 as hex.
       main: "#A8A7CD",
     },
     redColor: {
       main: "#DD2838",
     },
     whiteColor: {
-      // This is green.A700 as hex.
       main: "#fff",
     },
     darkColor: {
-      // This is green.A700 as hex.
       main: "#383576",
     },
     backgroundColor: {
@@ -39,7 +34,7 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <ThemeProvider theme={theme}>
-        <App />
+        <Router></Router>
       </ThemeProvider>
     </Provider>
   </React.StrictMode>
