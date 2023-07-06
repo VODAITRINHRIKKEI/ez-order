@@ -5,10 +5,6 @@
   box-sizing: border-box;
 }
 
-.homeContent {
-  padding: 30px;
-}
-
 .nav {
   width: 100%;
   height: 55px;
@@ -18,6 +14,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 0 30px;
+  border-bottom: 1px solid rgba(194, 194, 194, 0.3);
 }
 
 .navLogo {
@@ -82,4 +79,10 @@ img {
   transition: 0.2s linear all;
   background-color: #383576;
   color: #f8fafb;
+}
+
+.headerWithIcon{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 }
