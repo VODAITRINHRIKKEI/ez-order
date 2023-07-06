@@ -20,7 +20,7 @@ export default function Modal(props) {
               onClick={() => {
                 props.onClose();
               }}
-              fontSize="20"
+              fontSize="medium"
             />
           </div>
           <div className="dialogContent">{props.children}</div>
