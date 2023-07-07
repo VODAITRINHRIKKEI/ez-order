@@ -16,3 +16,75 @@
 .dialogFooter {
   display: flex;
 }
+
+.itemTitle {
+  font-weight: bold;
+  font-size: 14px;
+  color: #383576;
+}
+
+.itemComponent {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: auto;
+  padding: 15px 20px;
+  border-radius: 5px;
+  border: 0.6px solid rgba(111, 106, 242, 0.25);
+  background: #fff;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.itemComponent:hover {
+  background-color: #f9fafb;
+}
+
+.itemIcons {
+  display: flex;
+  align-items: center;
+}
+
+.itemIcon {
+  border: 1px solid;
+  border-radius: 50%;
+  padding: 3px;
+  margin-left: 4px;
+}
+
+.editIcon {
+  border: 0.6px solid rgba(111, 106, 242, 0.15);
+  color: #6f6af2;
+}
+
+.editIcon:hover {
+  transition: 0.3s linear all;
+  background-color: #6f6af2;
+  color: #fff;
+}
+
+.deleteIcon {
+  color: #dd2838;
+  border: 0.6px solid rgba(221, 40, 56, 0.15);
+}
+
+.deleteIcon:hover {
+  transition: 0.3s linear all;
+  background-color: #dd2838;
+  color: #fff;
+}
+
+.itemComponentActive {
+  background-color: #6f6af2;
+}
+.itemComponentActive:hover {
+  background-color: #6f6af2;
+}
+.itemComponentActive .itemTitle {
+  color: #fff;
+}
+.itemComponentActive .itemIcon {
+  color: #fff;
+}

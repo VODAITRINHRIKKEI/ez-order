@@ -3,6 +3,7 @@ import Dialog from "@mui/material/Dialog";
 import Title from "./Title";
 import CloseIcon from "@mui/icons-material/Close";
 import Button from "@mui/material/Button";
+import "./Component.css";
 
 export default function Modal(props) {
   return (

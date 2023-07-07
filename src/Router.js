@@ -1,11 +1,11 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App";
-import Menu from "./screen/Menu";
-import Table from "./screen/Table";
-import Dashboard from "./screen/Dashboard";
-import Bill from "./screen/Bill";
-import Setting from "./screen/Setting";
+import Menu from "./screen/kanban/Menu";
+import Table from "./screen/table/Table";
+import Dashboard from "./screen/dashboard/Dashboard";
+import Bill from "./screen/bill/Bill";
+import Setting from "./screen/setting/Setting";
 const router = createBrowserRouter([
   {
     path: "/",
