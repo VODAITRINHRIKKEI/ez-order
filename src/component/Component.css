@@ -4,6 +4,13 @@
   color: #383576;
 }
 
+.subTitleComponent {
+  font-weight: 500;
+  font-size: 14px;
+  color: #8480c6;
+  padding: 10px 0;
+}
+
 .dialogBody {
   padding: 30px;
   min-width: 280px;
@@ -87,4 +94,51 @@
 }
 .itemComponentActive .itemIcon {
   color: #fff;
+}
+
+.foodCard {
+  display: flex;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 2px 4px 8px 0px rgba(111, 106, 242, 0.15);
+  width: 286px;
+}
+
+.foodCardImage img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+.foodCardImage {
+  margin-right: 1rem;
+}
+.foodCardInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+}
+.foodName {
+  font-weight: bold;
+  color: #383576;
+  font-size: 18px;
+}
+
+.foodSubName {
+  font-weight: 400;
+  color: #a8a7cd;
+  font-size: 12px;
+}
+.foodPrice {
+  font-weight: 600;
+  color: #383576;
+  font-size: 14px;
+}
+.foodAction {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
 }

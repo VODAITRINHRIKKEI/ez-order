@@ -153,7 +153,6 @@ const CategoriesComponent = (props) => {
           });
           setCategories(data);
           if (firstSelect.current && data.length > 0) {
-            // console.log(!selectCategoryId);
             const setCategoryItem = {
               name: data[0].name,
               id: data[0].id,
@@ -169,26 +168,26 @@ const CategoriesComponent = (props) => {
 
   const handleDragEnd = async (result) => {
     if (!result.destination) return;
-
     const items = Array.from(categories);
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
-
+    const isIndexChanged = items.some((item, index) => item.index !== index);
     setCategories(items);
-
-    try {
-      const updatePromises = items.map((item, index) => {
-        return db
-          .collection("user")
-          .doc(props.userId)
-          .collection("category")
-          .doc(item.id)
-          .update({ index });
-      });
-      await Promise.all(updatePromises);
-      createMessage("Updated!", "success");
-    } catch (error) {
-      console.error("Error updating category index:", error);
+    if (isIndexChanged) {
+      try {
+        const updatePromises = items.map((item, index) => {
+          return db
+            .collection("user")
+            .doc(props.userId)
+            .collection("category")
+            .doc(item.id)
+            .update({ index });
+        });
+        await Promise.all(updatePromises);
+        createMessage("Updated!", "success");
+      } catch (error) {
+        console.error("Error updating category index:", error);
+      }
     }
   };
 

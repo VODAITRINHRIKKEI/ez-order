@@ -9,7 +9,7 @@ export default function Modal(props) {
   return (
     <>
       <Dialog
-        open={props.show}
+        open={props.show ? props.show : false}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
         fullWidth
