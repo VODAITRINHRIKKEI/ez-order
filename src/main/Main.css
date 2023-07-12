@@ -99,7 +99,7 @@ img {
   height: auto;
   background-color: #f2f2fd;
   min-width: 240px;
-  max-width: 31%;
+  width: auto;
   padding: 10px 20px;
   border-radius: 5px;
   margin-right: 1rem;
@@ -215,4 +215,7 @@ img {
   display: flex;
   width: 100%;
   justify-content: center;
+}
+.foodCardWrap{
+  padding: 5px 0;
 }

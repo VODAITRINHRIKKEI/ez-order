@@ -351,6 +351,7 @@ const FoodDetails = ({ food, removeCheckboxItem, removeRadioItem }) => {
                             <FormControlLabel
                               value={item.name}
                               control={<Radio />}
+                              key={item.id}
                               label={
                                 <SubTitle>
                                   {item.name + checkPrice(item.price)}
@@ -388,6 +389,7 @@ const RowMenuCreateFoodComponent = ({ item, userInfo, mainCategory }) => {
     price: "",
     url: "",
     details: false,
+    status: true,
     radio: [],
     checkBox: [],
   });
@@ -489,6 +491,10 @@ const RowMenuCreateFoodComponent = ({ item, userInfo, mainCategory }) => {
     }
   };
 
+  const handleChangeStatus = () => {
+    setFood({ ...food, status: !food.status });
+  };
+
   return (
     <>
       <AddIcon
@@ -507,7 +513,13 @@ const RowMenuCreateFoodComponent = ({ item, userInfo, mainCategory }) => {
         confirm={createFoodConfirm}
       >
         <div className="foodWrapBox">
-          <FoodItem image={preview} food={food} />
+          <FoodItem
+            image={preview}
+            food={food}
+            changeStatus={() => {
+              handleChangeStatus();
+            }}
+          />
         </div>
         {food.details ? (
           <FoodDetails
@@ -765,7 +777,80 @@ const RowMenuHeaderComponent = ({ item, userInfo, mainCategory }) => {
 };
 
 const RowMenuContentComponent = ({ item, userInfo, mainCategory }) => {
-  return <></>;
+  const [foods, setFoods] = useState([]);
+  const refQuery = db
+  .collection("user")
+  .doc(userInfo.uid)
+  .collection("category")
+  .doc(mainCategory.id)
+  .collection("subCategory")
+  .doc(item.id);
+  useEffect(() => {
+    try {
+      refQuery.collection("food").onSnapshot((querySnapshot) => {
+        const data = [];
+        // eslint-disable-next-line
+        querySnapshot.docs.map((doc) => {
+          const item = doc.data();
+          item.id = doc.id;
+          data.push(item);
+        });
+        setFoods(data);
+      });
+    } catch (error) {}
+    // eslint-disable-next-line
+  }, []);
+  return (
+    <>
+      {foods ? (
+        <>
+          {foods.map((food) => {
+            return (
+              <FoodComponent
+                food={food}
+                key={food.id}
+                item={item}
+                userInfo={userInfo}
+                mainCategory={mainCategory}
+              />
+            );
+          })}
+        </>
+      ) : (
+        ""
+      )}
+    </>
+  );
+};
+
+const FoodComponent = ({ food, item, userInfo, mainCategory }) => {
+  const image = food.url;
+  const refQuery = db
+    .collection("user")
+    .doc(userInfo.uid)
+    .collection("category")
+    .doc(mainCategory.id)
+    .collection("subCategory")
+    .doc(item.id);
+
+  const changeFoodStatus = async () => {
+    try {
+      refQuery.collection("food").doc(food.id).update({
+        status: !food.status,
+      });
+    } catch (error) {}
+  };
+  return (
+    <div className="foodCardWrap">
+      <FoodItem
+        image={image}
+        food={food}
+        changeStatus={() => {
+          changeFoodStatus();
+        }}
+      />
+    </div>
+  );
 };
 
 const RowMenuComponent = ({ item, index, userInfo, mainCategory }) => {

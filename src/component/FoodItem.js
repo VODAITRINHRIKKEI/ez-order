@@ -9,11 +9,14 @@ export default function FoodItem(props) {
     <div className="foodCard">
       {preview ? (
         <div className="foodCardImage">
-          <img src={preview} alt=""/>
+          <img src={preview} alt="" />
         </div>
       ) : (
         <div className="foodCardImage">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930" alt=""/>
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930"
+            alt=""
+          />
         </div>
       )}
 
@@ -24,7 +27,7 @@ export default function FoodItem(props) {
         </p>
         <p className="foodPrice">{food.price ? food.price : "Price"}</p>
         <div className="foodAction">
-          <Switch defaultChecked />
+          <Switch checked={food.status} onChange={props.changeStatus} />
           <div className="foodActionIcon">
             <EditOutlinedIcon fontSize="small" color="primary" />
             <DeleteOutlinedIcon fontSize="small" color="redColor" />
