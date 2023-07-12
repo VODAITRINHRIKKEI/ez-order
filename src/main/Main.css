@@ -151,3 +151,68 @@ img {
   justify-content: center;
   padding-bottom: 1.3rem;
 }
+
+.foodCheckboxList {
+  background-color: #f8fafb;
+  padding: 5px 15px;
+  border-radius: 5px;
+  margin-right: 1rem;
+  display: inline-block;
+  margin-bottom: 1rem;
+}
+.foodRadioBox{
+  background-color: #f8fafb;
+  padding: 5px 15px;
+  border-radius: 5px;
+}
+.foodCheckbox {
+  display: flex;
+  align-items: center;
+}
+
+.radioInputBox {
+  display: flex;
+}
+.radioInputPreview {
+  width: 50%;
+}
+.radioInputContent {
+  width: 50%;
+}
+.radioList {
+  display: flex;
+  flex-wrap: wrap;
+}
+.radioItemListWrap {
+  background-color: #f8fafb;
+  padding: 15px;
+  border-radius: 5px;
+  margin-right: 1rem;
+}
+
+.radioItemListHeader{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.radioFormControl{
+  width: 100%;
+}
+.radioItemListHeaderTitle{
+  font-weight: 500;
+  color: #8480c6;
+  font-weight: 14px;
+}
+.foodRadioBoxHeader{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.groupRadioList{
+  display: flex;
+}
+.loadingBox{
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}

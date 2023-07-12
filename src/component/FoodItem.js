@@ -9,11 +9,11 @@ export default function FoodItem(props) {
     <div className="foodCard">
       {preview ? (
         <div className="foodCardImage">
-          <img src={preview} />
+          <img src={preview} alt=""/>
         </div>
       ) : (
         <div className="foodCardImage">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930" />
+          <img src="https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930" alt=""/>
         </div>
       )}
 

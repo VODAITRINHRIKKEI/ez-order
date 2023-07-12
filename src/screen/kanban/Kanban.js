@@ -6,8 +6,10 @@ import FoodItem from "../../component/FoodItem";
 import SubTitle from "../../component/SubTitle";
 import { useSelector } from "react-redux";
 import { db } from "../../app/firebase";
+import { storage } from "../../app/firebase";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import imageCompression from "browser-image-compression";
+import { v4 as uuidv4 } from "uuid";
 import { firebase } from "../../app/firebase";
 import Chip from "@mui/material/Chip";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -31,7 +33,12 @@ import Typography from "@mui/material/Typography";
 import PropTypes from "prop-types";
 import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
 import RadioButtonCheckedOutlinedIcon from "@mui/icons-material/RadioButtonCheckedOutlined";
-
+import CloseIcon from "@mui/icons-material/Close";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
+import RemoveIcon from "@mui/icons-material/Remove";
 CustomTabPanel.propTypes = {
   children: PropTypes.node,
   index: PropTypes.number.isRequired,
@@ -115,7 +122,262 @@ const CheckBoxListComponent = ({ addCheckBox }) => {
   );
 };
 
+const RadioListComponent = ({ addRadio }) => {
+  const [radioName, setRadioName] = useState("");
+  const [radioItem, setRadioItem] = useState([]);
+  const [radioInput, setRadioInput] = useState({
+    name: "",
+    price: "",
+  });
+  const checkPrice = (price) => {
+    if (price !== 0) {
+      return "(" + price + ")";
+    } else {
+      return "(無料)";
+    }
+  };
+  const createRadioItem = async () => {
+    const item = { ...radioInput, id: uuidv4() };
+    if (item.price === "") {
+      item.price = 0;
+    }
+    setRadioItem([...radioItem, item]);
+    setRadioInput({
+      name: "",
+      price: "",
+    });
+  };
+  const confirmAddRadio = async () => {
+    const item = {
+      name: radioName,
+      list: [...radioItem],
+    };
+    addRadio(item);
+    await setNormalInput();
+  };
+
+  const setNormalInput = () => {
+    setRadioName("");
+    setRadioItem([]);
+    setRadioInput({
+      name: "",
+      price: "",
+    });
+  };
+  return (
+    <div className="radioInputBox">
+      <div className="radioInputPreview">
+        <SubTitle>Preview</SubTitle>
+        <div className="radioItemListWrap">
+          <FormControl className="radioFormControl">
+            <div className="radioItemListHeader">
+              <FormLabel id="demo-controlled-radio-buttons-group">
+                <p className="radioItemListHeaderTitle">{radioName}</p>
+              </FormLabel>
+              {radioName !== "" ? (
+                <div className="iconWrapBox">
+                  <RemoveIcon
+                    color="darkColor"
+                    sx={{ mr: 1 }}
+                    onClick={setNormalInput}
+                  ></RemoveIcon>
+                  {radioItem.length >= 2 ? (
+                    <AddIcon
+                      color="primary"
+                      onClick={confirmAddRadio}
+                    ></AddIcon>
+                  ) : (
+                    ""
+                  )}
+                </div>
+              ) : (
+                ""
+              )}
+            </div>
+            <RadioGroup
+              aria-labelledby="demo-controlled-radio-buttons-group"
+              name="controlled-radio-buttons-group"
+            >
+              {radioItem ? (
+                <div className="radioList">
+                  {radioItem.map((el) => {
+                    return (
+                      <div className="radioItem" key={el.id}>
+                        <FormControlLabel
+                          value={el.name}
+                          control={
+                            <Radio
+                              sx={{ "& .MuiSvgIcon-root": { fontSize: 20 } }}
+                            />
+                          }
+                          label={
+                            <SubTitle>
+                              {el.name + checkPrice(el.price)}
+                            </SubTitle>
+                          }
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                ""
+              )}
+            </RadioGroup>
+          </FormControl>
+        </div>
+      </div>
+      <div className="radioInputContent">
+        <SubTitle>InputContent</SubTitle>
+        <TextField
+          label="Radio Name"
+          variant="outlined"
+          fullWidth
+          onChange={(event) => {
+            setRadioName(event.target.value);
+          }}
+          value={radioName}
+        />
+        <Box
+          sx={{
+            display: "grid",
+            gap: 1,
+            gridTemplateColumns: "repeat(3, 1fr)",
+            mt: 1,
+          }}
+        >
+          <TextField
+            label="Name"
+            variant="outlined"
+            size="small"
+            fullWidth
+            onChange={(event) => {
+              setRadioInput({ ...radioInput, name: event.target.value });
+            }}
+            value={radioInput.name}
+          />
+          <TextField
+            label="Price"
+            variant="outlined"
+            fullWidth
+            size="small"
+            type="number"
+            value={radioInput.price}
+            onChange={(event) => {
+              setRadioInput({ ...radioInput, price: event.target.value });
+            }}
+          />
+          <Button
+            variant="outlined"
+            size="small"
+            startIcon={<AddIcon />}
+            onClick={async () => {
+              createRadioItem();
+            }}
+          >
+            ADD
+          </Button>
+        </Box>
+      </div>
+    </div>
+  );
+};
+
+const FoodDetails = ({ food, removeCheckboxItem, removeRadioItem }) => {
+  const checkPrice = (price) => {
+    if (price !== 0) {
+      return "(" + price + ")";
+    } else {
+      return "(無料)";
+    }
+  };
+  return (
+    <>
+      {food.checkBox.length > 0 ? (
+        <Box>
+          <SubTitle>Check</SubTitle>
+          {food.checkBox.map((el) => {
+            return (
+              <div className="foodCheckboxList" key={el.id}>
+                <div className="foodCheckbox">
+                  <FormControlLabel
+                    control={<Checkbox />}
+                    label={
+                      <SubTitle>{el.name + checkPrice(el.price)}</SubTitle>
+                    }
+                  />
+                  <CloseIcon
+                    fontSize="small"
+                    color="darkColor"
+                    onClick={async () => {
+                      await removeCheckboxItem(el.id);
+                    }}
+                  ></CloseIcon>
+                </div>
+              </div>
+            );
+          })}
+        </Box>
+      ) : (
+        ""
+      )}
+
+      {food.radio.length > 0 ? (
+        <Box>
+          <SubTitle>Choose</SubTitle>
+          {food.radio.map((el) => {
+            return (
+              <div className="foodRadioBox" key={el.id}>
+                <div className="foodRadioBoxHeader">
+                  <SubTitle>{el.name}</SubTitle>
+                  <CloseIcon
+                    fontSize="small"
+                    color="darkColor"
+                    onClick={async () => {
+                      await removeRadioItem(el.id);
+                    }}
+                  ></CloseIcon>
+                </div>
+                {el.list ? (
+                  <FormControl>
+                    <RadioGroup
+                      aria-labelledby="demo-radio-buttons-group-label"
+                      defaultValue={el.list[0].name}
+                      name="radio-buttons-group"
+                    >
+                      <div className="radioList">
+                        {el.list.map((item) => {
+                          return (
+                            <FormControlLabel
+                              value={item.name}
+                              control={<Radio />}
+                              label={
+                                <SubTitle>
+                                  {item.name + checkPrice(item.price)}
+                                </SubTitle>
+                              }
+                            />
+                          );
+                        })}
+                      </div>
+                    </RadioGroup>
+                  </FormControl>
+                ) : (
+                  ""
+                )}
+              </div>
+            );
+          })}
+        </Box>
+      ) : (
+        ""
+      )}
+    </>
+  );
+};
+
 const RowMenuCreateFoodComponent = ({ item, userInfo, mainCategory }) => {
+  const { enqueueSnackbar } = useSnackbar();
   const [value, setValue] = React.useState(0);
   const [file, setFile] = useState("");
   const [preview, setPreview] = useState("");
@@ -126,9 +388,10 @@ const RowMenuCreateFoodComponent = ({ item, userInfo, mainCategory }) => {
     price: "",
     url: "",
     details: false,
-    radio: {},
-    checkBox: {},
+    radio: [],
+    checkBox: [],
   });
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     if (!file) {
@@ -142,10 +405,14 @@ const RowMenuCreateFoodComponent = ({ item, userInfo, mainCategory }) => {
     // free memory when ever this component is unmounted
     return () => URL.revokeObjectURL(objectUrl);
   }, [file]);
+
+  const createMessage = (message, variant) => {
+    enqueueSnackbar(message, { variant });
+  };
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  const fileInputRef = useRef(null);
   const handleImageClick = () => {
     fileInputRef.current.click();
   };
@@ -164,15 +431,64 @@ const RowMenuCreateFoodComponent = ({ item, userInfo, mainCategory }) => {
     }
   };
   const handleAddCheckboxItem = (checkBoxItem) => {
-    console.log(checkBoxItem);
+    const concatCheckbox = { ...checkBoxItem, id: uuidv4() };
+    if (concatCheckbox.price === "") {
+      concatCheckbox.price = 0;
+    }
+    setFood({ ...food, checkBox: [...food.checkBox, concatCheckbox] });
   };
-  // const refQuery = db
-  //   .collection("user")
-  //   .doc(userInfo.uid)
-  //   .collection("category")
-  //   .doc(mainCategory.id)
-  //   .collection("subCategory")
-  //   .doc(item.id);
+  const handleAddRadioItem = (RadioItem) => {
+    const item = { ...RadioItem, id: uuidv4() };
+    setFood({ ...food, radio: [...food.radio, item] });
+  };
+  const removeCheckbox = (checkboxId) => {
+    const updatedCheckBox = food.checkBox.filter(
+      (checkbox) => checkbox.id !== checkboxId
+    );
+    setFood({ ...food, checkBox: updatedCheckBox });
+  };
+  const removeRadio = (radioItemId) => {
+    const updatedRadio = food.radio.filter((radio) => radio.id !== radioItemId);
+    setFood({ ...food, radio: updatedRadio });
+  };
+  const handleUpdateImage = async () => {
+    try {
+      if (!file) {
+        const url =
+          "https://us.123rf.com/450wm/yehorlisnyi/yehorlisnyi2104/yehorlisnyi210400016/167492439-no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-comin.jpg?ver=6";
+        return url;
+      } else {
+        const storageRef = ref(storage, `/files/${file.name}`);
+        const uploadTask = uploadBytesResumable(storageRef, file);
+        await uploadTask;
+        const url = await getDownloadURL(uploadTask.snapshot.ref);
+        return url;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const refQuery = db
+    .collection("user")
+    .doc(userInfo.uid)
+    .collection("category")
+    .doc(mainCategory.id)
+    .collection("subCategory")
+    .doc(item.id);
+
+  const createFoodConfirm = async () => {
+    try {
+      const responseUrl = await handleUpdateImage();
+      const item = { ...food };
+      item.url = responseUrl;
+      await refQuery.collection("food").add(item);
+      createMessage("Created!", "success");
+    } catch (error) {
+      createMessage("Failed!", "error");
+    }
+  };
+
   return (
     <>
       <AddIcon
@@ -188,12 +504,21 @@ const RowMenuCreateFoodComponent = ({ item, userInfo, mainCategory }) => {
           setCreateDialog(false);
         }}
         title={"Create Food"}
+        confirm={createFoodConfirm}
       >
-        <SubTitle>Preview</SubTitle>
         <div className="foodWrapBox">
           <FoodItem image={preview} food={food} />
         </div>
-        <SubTitle>Food infomation</SubTitle>
+        {food.details ? (
+          <FoodDetails
+            food={food}
+            removeCheckboxItem={removeCheckbox}
+            removeRadioItem={removeRadio}
+          />
+        ) : (
+          ""
+        )}
+        <SubTitle>Input Form</SubTitle>
         <Box
           sx={{
             display: "grid",
@@ -251,7 +576,7 @@ const RowMenuCreateFoodComponent = ({ item, userInfo, mainCategory }) => {
               }}
             />
           }
-          label="Details info setting"
+          label={<SubTitle>Setting details</SubTitle>}
         />
         {food.details ? (
           <>
@@ -279,7 +604,7 @@ const RowMenuCreateFoodComponent = ({ item, userInfo, mainCategory }) => {
               <CheckBoxListComponent addCheckBox={handleAddCheckboxItem} />
             </CustomTabPanel>
             <CustomTabPanel value={value} index={1}>
-              Item Two
+              <RadioListComponent addRadio={handleAddRadioItem} />
             </CustomTabPanel>
           </>
         ) : (
