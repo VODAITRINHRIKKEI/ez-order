@@ -764,6 +764,10 @@ const RowMenuHeaderComponent = ({ item, userInfo, mainCategory }) => {
   );
 };
 
+const RowMenuContentComponent = ({ item, userInfo, mainCategory }) => {
+  return <></>;
+};
+
 const RowMenuComponent = ({ item, index, userInfo, mainCategory }) => {
   return (
     <Draggable draggableId={item.id} index={index}>
@@ -775,6 +779,11 @@ const RowMenuComponent = ({ item, index, userInfo, mainCategory }) => {
         >
           <div className="kanbanRow">
             <RowMenuHeaderComponent
+              item={item}
+              userInfo={userInfo}
+              mainCategory={mainCategory}
+            />
+            <RowMenuContentComponent
               item={item}
               userInfo={userInfo}
               mainCategory={mainCategory}
